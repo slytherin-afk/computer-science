@@ -3,5 +3,9 @@
 version = 3
 
 [[package]]
-name = "computer-science"
+name = "algorithms"
+version = "0.1.0"
+
+[[package]]
+name = "data-structures"
 version = "0.1.0"
