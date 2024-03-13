@@ -48,20 +48,30 @@ where
     }
 }
 
-pub fn merge_sort<T>(array: &mut [T], begin: usize, end: usize)
+pub fn merge_sort<T>(array: &mut [T])
 where
     T: Copy + PartialOrd,
 {
-    if begin >= end {
-        return;
+    fn merge_sort_lambda<T>(array: &mut [T], begin: usize, end: usize)
+    where
+        T: Copy + PartialOrd,
+    {
+        if begin >= end {
+            return;
+        }
+
+        let mid = begin + (end - begin) / 2;
+
+        merge_sort_lambda(array, begin, mid);
+        merge_sort_lambda(array, mid + 1, end);
+
+        merge(array, begin, mid, end);
     }
 
-    let mid = begin + (end - begin) / 2;
+    let begin = 0;
+    let end = array.len() - 1;
 
-    merge_sort(array, begin, mid);
-    merge_sort(array, mid + 1, end);
-
-    merge(array, begin, mid, end);
+    merge_sort_lambda(array, begin, end);
 }
 
 #[cfg(test)]
@@ -72,9 +82,8 @@ mod test {
     fn sort_numbers_array() {
         let mut value = [100, 230, 0, 1, 32, 2];
         let expected = [0, 1, 2, 32, 100, 230];
-        let end = value.len() - 1;
 
-        merge_sort(&mut value, 0, end);
+        merge_sort(&mut value);
 
         assert_eq!(value, expected);
     }
@@ -83,9 +92,8 @@ mod test {
     fn sort_numbers_vector() {
         let mut value = vec![100, 230, 0, 1, 32, 2];
         let expected = vec![0, 1, 2, 32, 100, 230];
-        let end = value.len() - 1;
 
-        merge_sort(&mut value, 0, end);
+        merge_sort(&mut value);
 
         assert_eq!(value, expected);
     }
@@ -94,9 +102,8 @@ mod test {
     fn sort_char_array() {
         let mut value = ['z', 'd', 'a', 'e'];
         let expected = ['a', 'd', 'e', 'z'];
-        let end = value.len() - 1;
 
-        merge_sort(&mut value, 0, end);
+        merge_sort(&mut value);
 
         assert_eq!(value, expected);
     }
@@ -105,9 +112,8 @@ mod test {
     fn sort_char_vector() {
         let mut value = vec!['z', 'd', 'a', 'e'];
         let expected = vec!['a', 'd', 'e', 'z'];
-        let end = value.len() - 1;
 
-        merge_sort(&mut value, 0, end);
+        merge_sort(&mut value);
 
         assert_eq!(value, expected);
     }
